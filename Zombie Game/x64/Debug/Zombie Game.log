@@ -1,5 +1,5 @@
 ﻿  Main.cpp
   MainGame.cpp
-  Player.cpp
+  Character.cpp
   Generating Code...
   Zombie Game.vcxproj -> C:\Users\negri\GitSpace\Zombie Game\x64\Debug\Zombie Game.exe

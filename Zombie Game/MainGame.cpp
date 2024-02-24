@@ -1,13 +1,17 @@
 /// Zombie Game!!
 
+#include "MainGame.h"
+
 #include <TRXEngine/TRXEngine.h>
 #include <TRXEngine/ResourceManager.h>
 
-#include "MainGame.h"
+#include <iostream>
 
 MainGame::MainGame()
 	:m_screen_width{700},
 	m_screen_height{700},
+	m_level_width{700},
+	m_level_height{700},
 	m_fps{ 0 },
 	m_player_speed{5},
 	m_game_state {GAME_STATE::PLAY}
@@ -55,12 +59,18 @@ void MainGame::initAssets()
 {
 	// initialize base sprites
 	m_player_sprite.init(TEXTURES::PLAYER);
+	m_zombie_sprite.init(TEXTURES::ZOMBIE);
+	// set zombie sprite to color red
+	m_zombie_sprite.setColor({ 255,0,0,255 });
 
 	// initiliaze player
 	// set sprite should be called first because setPosition and setDimension will then update the position and dimensions of the sprite from its default
 	m_player.setSprite(m_player_sprite);
 	m_player.setPosition({ 0,0 });
 	m_player.setDimension({ 50,50 });
+	m_player.setType(CHARACTER_TYPE::PLAYER);
+
+	// initialize zombies
 }
 
 void MainGame::gameLoop()
@@ -112,22 +122,24 @@ void MainGame::processInput()
 	// if keys w, a, s, d are pressed, move character up, left, down, right respectively
 	if (m_input_manager.isKeyPressed(SDLK_w))
 	{
-		m_player.movePlayer({ 0.0f,1.0f }, m_player_speed);
+		if (m_player.getCenterPosition().y < m_level_height / 2)
+			std::cout << m_player.getPosition().y << '\n';
+			m_player.moveCharacter({ 0.0f,1.0f }, m_player_speed);
 	}
 	if (m_input_manager.isKeyPressed(SDLK_a))
 	{
-		m_player.movePlayer({ -1.0f,0.0f }, m_player_speed);
-
+		if (m_player.getCenterPosition().x > -m_level_width / 2)
+			m_player.moveCharacter({ -1.0f,0.0f }, m_player_speed);
 	}
 	if (m_input_manager.isKeyPressed(SDLK_s))
 	{
-		m_player.movePlayer({ 0.0f,-1.0f }, m_player_speed);
-
+		if (m_player.getCenterPosition().y > -m_level_height / 2)
+			m_player.moveCharacter({ 0.0f,-1.0f }, m_player_speed);
 	}
 	if (m_input_manager.isKeyPressed(SDLK_d))
 	{
-		m_player.movePlayer({ 1.0f,0.0f }, m_player_speed);
-
+		if (m_player.getCenterPosition().x < m_level_width / 2)
+			m_player.moveCharacter({ 1.0f,0.0f }, m_player_speed);
 	}
 	// if mouse button is pressed shoot projectiles at direction of mouse
 	if (m_input_manager.isKeyPressed(SDL_BUTTON_LEFT))
