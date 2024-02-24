@@ -1,6 +1,5 @@
 #pragma once
 
-#include "GameObjects.h"
 #include "Textures.h"
 
 #include <TRXEngine/Window.h>
@@ -54,7 +53,6 @@ private:
 	int m_player_speed{};
 
 	GAME_STATE m_game_state{};
-	GameObjects m_game_objects{};
 
 	TRXEngine::Window m_window{};   
 	TRXEngine::GLSLProgram m_texture_program{};   

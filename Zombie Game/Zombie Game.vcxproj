@@ -19,16 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="GameObjects.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Projectile.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="GameObjects.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Player.h" />
@@ -87,19 +83,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\negri\GitSpace\Zombie Game\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\negri\GitSpace\Zombie Game\Include;C:\Users\negri\GitSpace\TRXEngine;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\negri\GitSpace\Zombie Game\Deps;C:\Users\negri\GitSpace\Zombie Game\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Users\negri\GitSpace\Zombie Game\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\negri\GitSpace\Zombie Game\Include;C:\Users\negri\GitSpace\TRXEngine;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\negri\GitSpace\Zombie Game\Deps;C:\Users\negri\GitSpace\Zombie Game\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\negri\GitSpace\Zombie Game\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\negri\GitSpace\Zombie Game\Include;C:\Users\negri\GitSpace\TRXEngine;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\negri\GitSpace\Zombie Game\Deps;C:\Users\negri\GitSpace\Zombie Game\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Users\negri\GitSpace\Zombie Game\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\negri\GitSpace\Zombie Game\Include;C:\Users\negri\GitSpace\TRXEngine;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\negri\GitSpace\Zombie Game\Deps;C:\Users\negri\GitSpace\Zombie Game\x64\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

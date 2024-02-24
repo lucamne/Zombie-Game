@@ -53,7 +53,6 @@ void MainGame::initShaders()
 
 void MainGame::initAssets()
 {
-	m_game_objects.init();
 }
 
 void MainGame::gameLoop()
@@ -66,7 +65,6 @@ void MainGame::gameLoop()
 		// if player moves camera must move as well
 		m_camera.update();
 
-		m_game_objects.update();
 
 		drawGame();
 
@@ -106,19 +104,15 @@ void MainGame::processInput()
 	// if keys w, a, s, d are pressed, move character up, left, down, right respectively
 	if (m_input_manager.isKeyPressed(SDLK_w))
 	{
-		m_game_objects.setPlayerPosition(m_game_objects.getPlayerPosition() + glm::vec2(0, m_player_speed));
 	}
 	if (m_input_manager.isKeyPressed(SDLK_a))
 	{
-		m_game_objects.setPlayerPosition(m_game_objects.getPlayerPosition() + glm::vec2(-m_player_speed, 0));
 	}
 	if (m_input_manager.isKeyPressed(SDLK_s))
 	{
-		m_game_objects.setPlayerPosition(m_game_objects.getPlayerPosition() + glm::vec2(0, -m_player_speed));
 	}
 	if (m_input_manager.isKeyPressed(SDLK_d))
 	{
-		m_game_objects.setPlayerPosition(m_game_objects.getPlayerPosition() + glm::vec2(m_player_speed, 0));
 	}
 	// if mouse button is pressed shoot projectiles at direction of mouse
 	if (m_input_manager.isKeyPressed(SDL_BUTTON_LEFT))
@@ -127,7 +121,6 @@ void MainGame::processInput()
 		glm::vec2 mouse_coords{ m_input_manager.getMouseCoords() };
 		mouse_coords = m_camera.convertScreenToWorld(mouse_coords);
 
-		m_game_objects.fireProjectile(mouse_coords, 10.0f);
 	}
 }
 
@@ -153,8 +146,6 @@ void MainGame::drawGame()
 
 	// sprite batch is cleared and can now be drawed to
 	m_sprite_batch.begin();
-	// draw game objects
-	m_game_objects.draw(m_sprite_batch);
 	// end sorts sprite batch by texture for efficient rendering
 	m_sprite_batch.end();
 	// redner sprite batch
@@ -167,5 +158,4 @@ void MainGame::drawGame()
 
 void MainGame::cleanup()
 {
-	m_game_objects.cleanup();
 }
