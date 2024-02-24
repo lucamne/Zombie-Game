@@ -1,7 +1,9 @@
+#include "Player.h"
+
+#include "Textures.h"
+
 #include <TRXEngine/Vertex.h>
 #include <TRXEngine/ResourceManager.h>
-
-#include "Player.h"
 
 Player::Player()
 	:m_position{0},
@@ -30,4 +32,19 @@ void Player::draw(TRXEngine::SpriteBatch& sprite_batch)
 	const glm::vec4 uv_rect(0.0f, 0.0f, 1.0f, 1.0f);
 	TRXEngine::Color color{ 255,255,255,255 };
 	sprite_batch.draw(dest_rect, uv_rect, m_texture.id,0.0f, color);
+	m_projectile_manager.drawProjectiles(sprite_batch);
+}
+
+void Player::fireProjectile(glm::vec2 target, float speed)
+{
+	// get normalized direction of projectile
+	glm::vec2 direction{ target - m_position };
+	direction = glm::normalize(direction);
+
+	m_projectile_manager.addProjectile(*new Projectile(TEXTURES::PROJECTILE, m_position, 10, 10, direction, speed, 100));
+}
+
+void Player::update()
+{
+	m_projectile_manager.updateProjectiles();
 }

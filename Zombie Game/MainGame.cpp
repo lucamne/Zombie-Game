@@ -53,7 +53,7 @@ void MainGame::initShaders()
 
 void MainGame::initAssets()
 {
-	m_player1 = Player("Textures/jimmy_jump/PNG/CharacterLeft_Standing.png",glm::vec2{0}, 50, 50);
+	m_game_objects.init();
 }
 
 void MainGame::gameLoop()
@@ -65,7 +65,8 @@ void MainGame::gameLoop()
 		processInput();
 		// if player moves camera must move as well
 		m_camera.update();
-		m_projectile_manager.updateProjectiles();
+
+		m_game_objects.update();
 
 		drawGame();
 
@@ -105,31 +106,28 @@ void MainGame::processInput()
 	// if keys w, a, s, d are pressed, move character up, left, down, right respectively
 	if (m_input_manager.isKeyPressed(SDLK_w))
 	{
-		m_player1.setPosition(m_player1.getPosition() + glm::vec2(0, m_player_speed));
+		m_game_objects.setPlayerPosition(m_game_objects.getPlayerPosition() + glm::vec2(0, m_player_speed));
 	}
 	if (m_input_manager.isKeyPressed(SDLK_a))
 	{
-		m_player1.setPosition(m_player1.getPosition() + glm::vec2(-m_player_speed, 0));
+		m_game_objects.setPlayerPosition(m_game_objects.getPlayerPosition() + glm::vec2(-m_player_speed, 0));
 	}
 	if (m_input_manager.isKeyPressed(SDLK_s))
 	{
-		m_player1.setPosition(m_player1.getPosition() + glm::vec2(0, -m_player_speed));
+		m_game_objects.setPlayerPosition(m_game_objects.getPlayerPosition() + glm::vec2(0, -m_player_speed));
 	}
 	if (m_input_manager.isKeyPressed(SDLK_d))
 	{
-		m_player1.setPosition(m_player1.getPosition() + glm::vec2(m_player_speed, 0));
+		m_game_objects.setPlayerPosition(m_game_objects.getPlayerPosition() + glm::vec2(m_player_speed, 0));
 	}
 	// if mouse button is pressed shoot projectiles at direction of mouse
 	if (m_input_manager.isKeyPressed(SDL_BUTTON_LEFT))
 	{
-		// convert mouse coordinates relative to screen to world coordinates
+		// convert relative screen coordinates to world coordinates
 		glm::vec2 mouse_coords{ m_input_manager.getMouseCoords() };
 		mouse_coords = m_camera.convertScreenToWorld(mouse_coords);
-		// get normalized direction of projectile
-		glm::vec2 direction{ mouse_coords - m_player1.getPosition() };
-		direction = glm::normalize(direction);
 
-		m_projectile_manager.addProjectile(*new Projectile("Textures/jimmy_jump/PNG/CharacterLeft_Standing.png",m_player1.getPosition(),10,10,direction,10.0f));
+		m_game_objects.fireProjectile(mouse_coords, 10.0f);
 	}
 }
 
@@ -155,10 +153,8 @@ void MainGame::drawGame()
 
 	// sprite batch is cleared and can now be drawed to
 	m_sprite_batch.begin();
-	// draw player
-	m_player1.draw(m_sprite_batch);
-	// draw projectiles
-	m_projectile_manager.drawProjectiles(m_sprite_batch);
+	// draw game objects
+	m_game_objects.draw(m_sprite_batch);
 	// end sorts sprite batch by texture for efficient rendering
 	m_sprite_batch.end();
 	// redner sprite batch
@@ -171,5 +167,5 @@ void MainGame::drawGame()
 
 void MainGame::cleanup()
 {
-	m_projectile_manager.cleanup();
+	m_game_objects.cleanup();
 }

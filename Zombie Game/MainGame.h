@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Player.h"
-#include "Projectile.h"
+#include "GameObjects.h"
+#include "Textures.h"
 
 #include <TRXEngine/Window.h>
 #include <TRXEngine/GLSLProgram.h>
@@ -54,8 +54,7 @@ private:
 	int m_player_speed{};
 
 	GAME_STATE m_game_state{};
-	Player m_player1{};
-	ProjectileManager m_projectile_manager{};
+	GameObjects m_game_objects{};
 
 	TRXEngine::Window m_window{};   
 	TRXEngine::GLSLProgram m_texture_program{};   

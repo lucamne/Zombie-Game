@@ -2,12 +2,13 @@
 
 #include <TRXEngine/ResourceManager.h>
 
-Projectile::Projectile(const std::string& path_to_texture, glm::vec2 init_position, int width, int height, glm::vec2 direction, float speed)
-	:m_position{init_position},
-	m_direction{glm::normalize(direction)},
-	m_speed{speed},
-	m_width{width},
-	m_height{height},
+Projectile::Projectile(const std::string& path_to_texture, glm::vec2 init_position, int width, int height, glm::vec2 direction, float speed, int lifetime)
+	:m_position{ init_position },
+	m_direction{ glm::normalize(direction) },
+	m_speed{ speed },
+	m_width{ width },
+	m_height{ height },
+	m_lifetime{ lifetime },
 	m_texture{ TRXEngine::ResourceManager::getTexture(path_to_texture) }
 {
 }
@@ -23,9 +24,14 @@ void Projectile::draw(TRXEngine::SpriteBatch& sprite_batch)
 	sprite_batch.draw(dest_rec, uv_rec, m_texture.id, 0.0f, { 255,255,255,255 });
 }
 
-void Projectile::update()
+bool Projectile::update()
 {
+	if (--m_lifetime <= 0)
+	{
+		return true;
+	}
 	m_position += m_direction * m_speed;
+	return false;
 }
 
 ProjectileManager::ProjectileManager()
@@ -46,9 +52,20 @@ void ProjectileManager::drawProjectiles(TRXEngine::SpriteBatch& sprite_batch)
 
 void ProjectileManager::updateProjectiles()
 {
-	for (Projectile* projectile : m_projectiles)
+	for (int i{0}; i < m_projectiles.size();)
 	{
-		projectile->update();
+		// if projectile's lifetime is 0 destroy projectile object and remove from projectiles vector
+		if (m_projectiles[i]->update())
+		{
+			delete m_projectiles[i];
+			// replace current projectile pointer with last projectile pointer and then remove that pointer from vector
+			m_projectiles[i] = m_projectiles.back();
+			m_projectiles.pop_back();
+		}
+		else {
+			// only increment i if projectile is not destroyed so that the replacement projectile does not get skipped
+			i++;
+		}
 	}
 }
 
