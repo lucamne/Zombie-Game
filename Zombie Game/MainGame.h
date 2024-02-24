@@ -1,12 +1,14 @@
 #pragma once
 
 #include "Textures.h"
+#include "Player.h"
 
 #include <TRXEngine/Window.h>
 #include <TRXEngine/GLSLProgram.h>
 #include <TRXEngine/InputManager.h>
 #include <TRXEngine/Camera2D.h>
 #include <TRXEngine/SpriteBatch.h>
+#include <TRXEngine/Sprite.h>
 #include <TRXEngine/Timing.h>
 
 enum class GAME_STATE
@@ -53,6 +55,7 @@ private:
 	int m_player_speed{};
 
 	GAME_STATE m_game_state{};
+	Player m_player{};
 
 	TRXEngine::Window m_window{};   
 	TRXEngine::GLSLProgram m_texture_program{};   
@@ -60,4 +63,5 @@ private:
 	TRXEngine::Camera2D m_camera{};
 	TRXEngine::SpriteBatch m_sprite_batch{};
 	TRXEngine::FpsLimiter m_fps_limiter{};
+	TRXEngine::Sprite m_player_sprite{};
 };

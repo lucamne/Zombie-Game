@@ -53,6 +53,14 @@ void MainGame::initShaders()
 
 void MainGame::initAssets()
 {
+	// initialize base sprites
+	m_player_sprite.init(TEXTURES::PLAYER);
+
+	// initiliaze player
+	// set sprite should be called first because setPosition and setDimension will then update the position and dimensions of the sprite from its default
+	m_player.setSprite(m_player_sprite);
+	m_player.setPosition({ 0,0 });
+	m_player.setDimension({ 50,50 });
 }
 
 void MainGame::gameLoop()
@@ -104,15 +112,22 @@ void MainGame::processInput()
 	// if keys w, a, s, d are pressed, move character up, left, down, right respectively
 	if (m_input_manager.isKeyPressed(SDLK_w))
 	{
+		m_player.movePlayer({ 0.0f,1.0f }, m_player_speed);
 	}
 	if (m_input_manager.isKeyPressed(SDLK_a))
 	{
+		m_player.movePlayer({ -1.0f,0.0f }, m_player_speed);
+
 	}
 	if (m_input_manager.isKeyPressed(SDLK_s))
 	{
+		m_player.movePlayer({ 0.0f,-1.0f }, m_player_speed);
+
 	}
 	if (m_input_manager.isKeyPressed(SDLK_d))
 	{
+		m_player.movePlayer({ 1.0f,0.0f }, m_player_speed);
+
 	}
 	// if mouse button is pressed shoot projectiles at direction of mouse
 	if (m_input_manager.isKeyPressed(SDL_BUTTON_LEFT))
@@ -146,6 +161,8 @@ void MainGame::drawGame()
 
 	// sprite batch is cleared and can now be drawed to
 	m_sprite_batch.begin();
+	// draw player
+	m_player.draw(m_sprite_batch);
 	// end sorts sprite batch by texture for efficient rendering
 	m_sprite_batch.end();
 	// redner sprite batch

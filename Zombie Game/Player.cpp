@@ -22,3 +22,9 @@ void Player::updatePosition(glm::vec2 new_pos)
 	m_position = new_pos;
 	m_sprite.setPosition(new_pos);
 }
+
+void Player::updateDimensions(glm::vec2 new_dim)
+{
+	m_dimensions = new_dim;
+	m_sprite.setDimension(new_dim);
+}

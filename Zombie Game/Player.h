@@ -1,10 +1,6 @@
 #pragma once
 
-#include "Projectile.h"
-
 #include <TRXEngine/SpriteBatch.h>
-#include <TRXEngine/ImageLoader.h>
-#include <TRXEngine/GLTexture.h>
 #include <TRXEngine/Sprite.h>
 
 #include<glm/glm.hpp>
@@ -17,10 +13,13 @@ public:
 	Player();
 	~Player();
 
+	void draw(TRXEngine::SpriteBatch& sprite_batch) { m_sprite.draw(sprite_batch); }
+
 	// setters
-	void setPosition(glm::vec2 pos) { m_position = pos; }
-	void setDimension(glm::vec2 dim) { m_dimensions = dim; }
+	// set sprite should be usually be called before setPosition or setDimension
 	void setSprite(const TRXEngine::Sprite& sprite) { m_sprite = sprite; }
+	void setPosition(glm::vec2 pos) { updatePosition(pos); }
+	void setDimension(glm::vec2 dim) { updateDimensions(dim); }
 
 	void movePlayer(glm::vec2 normalized_direction, int distance);
 
@@ -32,5 +31,6 @@ private:
 
 	// updates player position and sprite position
 	void updatePosition(glm::vec2 new_pos);
+	void updateDimensions(glm::vec2 new_dim);
 };
 
