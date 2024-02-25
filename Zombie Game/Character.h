@@ -29,17 +29,20 @@ public:
 	void setSprite(const TRXEngine::Sprite& sprite) { m_sprite = sprite; }
 	void setPosition(glm::vec2 pos) { updatePosition(pos); }
 	void setDimension(glm::vec2 dim) { updateDimensions(dim); }
-	void setType(CHARACTER_TYPE type) { m_type = type; }
+	void setType(CHARACTER_TYPE type);
 
 	// getters
 	glm::vec2 getPosition() const { return m_position; }
 	// returns position of center of Character as opposed to bottom left
 	glm::vec2 getCenterPosition() const { return m_position + 0.5f * m_dimensions; }
+	glm::vec2 getDirectionOfMovement() const { return m_direction; }
 	
 
 private:
 	CHARACTER_TYPE m_type{};
 
+	// current direction character is moving, only applicable to zombies and civilians
+	glm::vec2 m_direction{};
 	glm::vec2 m_position{};
 	// width then height
 	glm::vec2 m_dimensions{};

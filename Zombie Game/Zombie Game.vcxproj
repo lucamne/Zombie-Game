@@ -22,9 +22,11 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Projectile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Character.h" />
