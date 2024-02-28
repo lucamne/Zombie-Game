@@ -18,9 +18,11 @@ public:
 	void load(std::string fp);
 	// draws non-agent components of level (walls)
 	void draw(TRXEngine::SpriteBatch& sprite_batch);
+	// given a screen coordinate, returns tile value that screen coordinate is in
+	char getTileAtScreenCoordinate(glm::vec2 screen_coords);
+
 	
 	// getters
-
 	glm::vec2 getInitPlayerPosition() const { return m_init_player_position; }
 	glm::vec2 getInitZombiePosition() const { return m_init_zombie_position; }
 
@@ -38,6 +40,6 @@ private:
 
 	void initPositions();
 	void drawWall(int x, int y, TRXEngine::SpriteBatch& sprite_batch);
-	glm::vec2 levelCoordsToScreenCoords(glm::vec2 level_coordinates);
+	glm::vec2 levelCoordsToScreenCoords(glm::vec2 tile_coordinates);
 };
 

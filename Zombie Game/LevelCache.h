@@ -15,5 +15,5 @@ public:
 	Level& load(const std::string& fp);
 
 private:
-	std::map<std::string, Level> m_level_cache{};
+	std::map<std::string, Level*> m_level_cache{};
 };

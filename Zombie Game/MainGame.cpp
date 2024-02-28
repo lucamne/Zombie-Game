@@ -40,6 +40,17 @@ void MainGame::initSystems()
 	m_fps_limiter.init(60.0f);
 
 	initShaders();
+
+	// load a level
+	LevelManager::load("Levels/Level1.txt");
+
+	initAgents();
+}
+
+void MainGame::initAgents()
+{
+	m_player.setPosition(LevelManager::getInitPlayerPosition());
+	m_player.setTexturePath(TEXTURES::PLAYER);
 }
 
 void MainGame::initShaders()
@@ -101,21 +112,21 @@ void MainGame::processInput()
 	// if keys w, a, s, d are pressed, move character up, left, down, right respectively
 	if (m_input_manager.isKeyPressed(SDLK_w))
 	{
-		//m_level.movePlayer({ 0.0,1.0 });
+		m_player.movePlayer({ 0.0,1.0 });
 	}
 	if (m_input_manager.isKeyPressed(SDLK_a))
 	{
-		//m_level.movePlayer({ -1.0,0.0 });
+		m_player.movePlayer({ -1.0,0.0 });
 
 	}
 	if (m_input_manager.isKeyPressed(SDLK_s))
 	{
-		//m_level.movePlayer({ 0.0,-1.0 });
+		m_player.movePlayer({ 0.0,-1.0 });
 
 	}
 	if (m_input_manager.isKeyPressed(SDLK_d))
 	{
-		//m_level.movePlayer({ 1.0,0.0 });
+		m_player.movePlayer({ 1.0,0.0 });
 
 	}
 	if (m_input_manager.isKeyPressed(SDLK_q))
@@ -129,7 +140,7 @@ void MainGame::processInput()
 
 	}
 
-	//m_camera.setPosition(m_level.getPlayerPosition());
+	m_camera.setPosition(m_player.getPosition());
 
 	// if mouse button is pressed shoot projectiles at direction of mouse
 	if (m_input_manager.isKeyPressed(SDL_BUTTON_LEFT))
@@ -165,7 +176,10 @@ void MainGame::drawGame()
 	m_sprite_batch.begin();
 
 	//draw level
-	//m_level.draw(m_sprite_batch);
+	LevelManager::draw(m_sprite_batch);
+
+	// draw player
+	m_player.draw(m_sprite_batch);
 
 	// end sorts sprite batch by texture for efficient rendering
 	m_sprite_batch.end();

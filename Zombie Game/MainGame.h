@@ -1,7 +1,8 @@
 #pragma once
 
+#include "Player.h"
 #include "Textures.h"
-#include "Level.h"
+#include "LevelManager.h"
 
 #include <TRXEngine/Window.h>
 #include <TRXEngine/GLSLProgram.h>
@@ -30,6 +31,9 @@ private:
 	/// Initialize the core systsems
 	void initSystems();
 
+	/// initialize agents
+	void initAgents();
+
 	/// Initializes the shaders
 	void initShaders();
 
@@ -51,6 +55,7 @@ private:
 	float m_fps{};
 
 	GAME_STATE m_game_state{};
+	Player m_player{};
 
 	TRXEngine::Window m_window{};   
 	TRXEngine::GLSLProgram m_texture_program{};   

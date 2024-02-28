@@ -13,13 +13,16 @@ class LevelManager
 {
 public:
 	// loads level from filepath and sets active level
-	static void load(const std::string& fp) { m_active_level = &(m_level_cache.load(fp)); }
+	static void load(const std::string& fp);
 	// draws active level
-	static void draw(TRXEngine::SpriteBatch& sprite_batch) { m_active_level->draw(sprite_batch); }
+	static void draw(TRXEngine::SpriteBatch& sprite_batch);
 	// get starting player position from active level
-	static glm::vec2 getInitPlayerPosition() { return m_active_level->getInitPlayerPosition(); }
+	static glm::vec2 getInitPlayerPosition();
 	// get starting zombie position from active level
-	static glm::vec2 getInitZombiePosition() { return m_active_level->getInitZombiePosition(); }
+	static glm::vec2 getInitZombiePosition();
+	// get raw level data
+	static const Level& getLevelData() { return *m_active_level; }
+	
 
 private:
 	static LevelCache m_level_cache;
@@ -27,4 +30,3 @@ private:
 	static Level* m_active_level;
 };
 
-Level* LevelManager::m_active_level{};

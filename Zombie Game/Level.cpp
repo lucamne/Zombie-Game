@@ -61,6 +61,18 @@ void Level::draw(TRXEngine::SpriteBatch& sprite_batch)
 	}
 }
 
+char Level::getTileAtScreenCoordinate(glm::vec2 screen_coords)
+{
+	int x_tile{ static_cast<int>(screen_coords.x / m_tile_width) };
+	int y_tile{ static_cast<int>(m_data.size()) -1 - static_cast<int>(screen_coords.y / m_tile_height) };
+	// bounds checking to prevent crash
+	if (x_tile < 0 || x_tile >= m_data[0].size() || y_tile < 0 || y_tile >= m_data.size())
+	{
+		return '?';
+	}
+	return m_data[y_tile][x_tile];
+}
+
 // initializes the positions of agents based on m_level_data
 void Level::initPositions()
 {
@@ -79,6 +91,7 @@ void Level::initPositions()
 				break;
 			case 'Z':
 				m_init_zombie_position = levelCoordsToScreenCoords({ x,y });
+				break;
 			default:
 				break;
 			}
@@ -98,9 +111,9 @@ void Level::drawWall(int x, int y, TRXEngine::SpriteBatch& sprite_batch)
 	sprite_batch.draw(dest_rec, uv_rec, wall_texture.id, 1.0f, color);
 }
 
-glm::vec2 Level::levelCoordsToScreenCoords(glm::vec2 level_coordinates)
+glm::vec2 Level::levelCoordsToScreenCoords(glm::vec2 tile_coordinates)
 {
 	// multiply x level coordinates by block_width
 	// subtract y from total rows in level then multiply by block_height so that level is not flipped withh respect to level.txt drawing
-	 return { level_coordinates.x * m_tile_width,(m_data.size() - level_coordinates.y) * m_tile_height };
+	 return { tile_coordinates.x * m_tile_width,(m_data.size() - 1 - tile_coordinates.y) * m_tile_height };
 }
