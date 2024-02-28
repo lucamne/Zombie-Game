@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Textures.h"
-#include "Character.h"
-#include "Map.h"
+#include "Level.h"
 
 #include <TRXEngine/Window.h>
 #include <TRXEngine/GLSLProgram.h>
@@ -34,14 +33,8 @@ private:
 	/// Initializes the shaders
 	void initShaders();
 
-	/// Initialize assets like player, npc, and map
-	void initAssets();
-
 	/// Main game loop
 	void gameLoop();
-
-	/// Randomly move zombies
-	void moveZombies();
 
 	/// Handles input processing
 	void processInput();
@@ -56,14 +49,9 @@ private:
 	int m_screen_width{};
 	int m_screen_height{};
 	float m_fps{};
-	int m_player_speed{};
-	int m_zombie_speed{};
 
 	GAME_STATE m_game_state{};
-	// playable and non-playable characters
-	Character m_player{};
-	std::vector<Character* > m_zombies{};
-	Map m_map{};
+	Level m_level{};
 
 	TRXEngine::Window m_window{};   
 	TRXEngine::GLSLProgram m_texture_program{};   
