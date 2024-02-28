@@ -51,7 +51,6 @@ private:
 	float m_fps{};
 
 	GAME_STATE m_game_state{};
-	Level m_level{};
 
 	TRXEngine::Window m_window{};   
 	TRXEngine::GLSLProgram m_texture_program{};   

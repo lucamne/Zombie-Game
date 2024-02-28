@@ -1,6 +1,8 @@
 C:\Users\negri\GitSpace\Zombie Game\Zombie Game\Agent.cpp;C:\Users\negri\GitSpace\Zombie Game\Zombie Game\x64\Debug\Agent.obj
 C:\Users\negri\GitSpace\Zombie Game\Zombie Game\Human.cpp;C:\Users\negri\GitSpace\Zombie Game\Zombie Game\x64\Debug\Human.obj
 C:\Users\negri\GitSpace\Zombie Game\Zombie Game\Level.cpp;C:\Users\negri\GitSpace\Zombie Game\Zombie Game\x64\Debug\Level.obj
+C:\Users\negri\GitSpace\Zombie Game\Zombie Game\LevelCache.cpp;C:\Users\negri\GitSpace\Zombie Game\Zombie Game\x64\Debug\LevelCache.obj
+C:\Users\negri\GitSpace\Zombie Game\Zombie Game\LevelManager.cpp;C:\Users\negri\GitSpace\Zombie Game\Zombie Game\x64\Debug\LevelManager.obj
 C:\Users\negri\GitSpace\Zombie Game\Zombie Game\Main.cpp;C:\Users\negri\GitSpace\Zombie Game\Zombie Game\x64\Debug\Main.obj
 C:\Users\negri\GitSpace\Zombie Game\Zombie Game\MainGame.cpp;C:\Users\negri\GitSpace\Zombie Game\Zombie Game\x64\Debug\MainGame.obj
 C:\Users\negri\GitSpace\Zombie Game\Zombie Game\Player.cpp;C:\Users\negri\GitSpace\Zombie Game\Zombie Game\x64\Debug\Player.obj

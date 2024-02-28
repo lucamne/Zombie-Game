@@ -1,12 +1,11 @@
 #pragma once
 
-#include "LevelData.h"
-
 #include <TRXEngine/Vertex.h>
 #include <TRXEngine/SpriteBatch.h>
 
 #include <glm/glm.hpp>
 
+#include <string>
 /// <summary>
 ///  Agent class handles collision and rendering for all agents (zombies, humans -> player)
 /// </summary>
@@ -20,7 +19,7 @@ public:
 	void draw(TRXEngine::SpriteBatch& sprite_batch) const;
 	// checks if agent has collided with wall and pushes them out from wall
 	// returns true if a collision has occured
-	bool checkWallCollisions(const LevelData& lvl_data);
+	//bool checkWallCollisions(const LevelData& lvl_data);
 
 	// setters
 	void setPosition(glm::vec2 pos) { m_position = pos; }

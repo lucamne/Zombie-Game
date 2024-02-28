@@ -31,7 +31,7 @@ void Agent::draw(TRXEngine::SpriteBatch& sprite_batch) const
 }
 
 
-bool Agent::checkWallCollisions(const LevelData& lvl_data)
+/*bool Agent::checkWallCollisions(const LevelData& lvl_data)
 {
 	// y_invert is used to invert y value as row 0 of level_data holds the value of tiles at the top of the screen rather than the bottom
 	int y_range{ static_cast<int>(lvl_data.data.size()) * lvl_data.block_height};
@@ -110,4 +110,4 @@ bool Agent::checkWallCollisions(const LevelData& lvl_data)
 	}
 
 	return false;
-}
+}*/
