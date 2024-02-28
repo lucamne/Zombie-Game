@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Agent.h"
 
 #include <glm/glm.hpp>

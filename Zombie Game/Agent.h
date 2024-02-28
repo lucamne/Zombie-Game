@@ -1,7 +1,9 @@
 #pragma once
 
-#include <TRXEngine/Sprite.h>
+#include "LevelData.h"
+
 #include <TRXEngine/Vertex.h>
+#include <TRXEngine/SpriteBatch.h>
 
 #include <glm/glm.hpp>
 
@@ -16,6 +18,9 @@ public:
 	~Agent();
 
 	void draw(TRXEngine::SpriteBatch& sprite_batch) const;
+	// checks if agent has collided with wall and pushes them out from wall
+	// returns true if a collision has occured
+	bool checkWallCollisions(const LevelData& lvl_data);
 
 	// setters
 	void setPosition(glm::vec2 pos) { m_position = pos; }
@@ -34,9 +39,5 @@ private:
 	std::string m_path_to_texture{};
 	TRXEngine::Color m_agent_color{ 255,255,255,255 };
 	int m_speed{};
-
-	// checks if agent has collided with wall and pushes them out from wall
-	// returns true if a collision has occured
-	bool checkWallCollisions(const std::vector<std::string>& level_data);
 };
 
