@@ -25,6 +25,12 @@ public:
 	// getters
 	glm::vec2 getInitPlayerPosition() const { return m_init_player_position; }
 	glm::vec2 getInitZombiePosition() const { return m_init_zombie_position; }
+	int getTileWidth() const { return m_tile_width; }
+	int getTileHeight() const { return m_tile_height; }
+
+	// setters
+	void setTileWidth(int width) { m_tile_width = width; }
+	void setTileHeight(int height) { m_tile_height = height; }
 
 private:
 	std::vector<std::string> m_data{};

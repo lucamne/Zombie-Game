@@ -6,6 +6,8 @@
 #include <glm/glm.hpp>
 
 #include <string>
+
+
 /// <summary>
 ///  Agent class handles collision and rendering for all agents (zombies, humans -> player)
 /// </summary>
