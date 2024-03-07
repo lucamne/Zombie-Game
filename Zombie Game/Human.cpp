@@ -1,7 +1,7 @@
 #include "Human.h"
 
 Human::Human()
-	:Human({0,0}, {50,50}, "")
+	:Agent()
 {
 }
 

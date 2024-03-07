@@ -51,6 +51,12 @@ void MainGame::initAgents()
 {
 	m_player.setPosition(LevelManager::getInitPlayerPosition());
 	m_player.setTexturePath(TEXTURES::PLAYER);
+	// add initial zombie to zombie list
+	Zombie zombie(LevelManager::getInitZombiePosition(), glm::vec2(50, 50), TEXTURES::ZOMBIE);
+	// set color of initial zombie to red
+	zombie.setColor({ 255, 0, 0, 255 });
+	zombie.setSpeed(3);
+	m_zombies.emplace_back(zombie);
 }
 
 void MainGame::initShaders()
@@ -71,6 +77,11 @@ void MainGame::gameLoop()
 		processInput();
 		
 		m_camera.update();
+
+		for (Zombie& z : m_zombies)
+		{
+			z.updatePosition(m_player);
+		}
 
 		drawGame();
 
@@ -178,8 +189,15 @@ void MainGame::drawGame()
 	//draw level
 	LevelManager::draw(m_sprite_batch);
 
+	// draw zombies
+	for (Zombie& zombie : m_zombies)
+	{
+		zombie.draw(m_sprite_batch);
+	}
+
 	// draw player
 	m_player.draw(m_sprite_batch);
+
 
 	// end sorts sprite batch by texture for efficient rendering
 	m_sprite_batch.end();

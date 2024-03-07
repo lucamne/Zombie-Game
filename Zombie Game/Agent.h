@@ -32,10 +32,12 @@ public:
 	glm::vec2 getPosition() const { return m_position; }
 	glm::vec2 getDimensions() const { return m_dimensions; }
 	int getSpeed() const { return m_speed; }
+	glm::vec2 getCenterPosition() const { return m_center_position; }
 
 private:
 	glm::vec2 m_position{};
 	glm::vec2 m_dimensions{};
+	glm::vec2 m_center_position{};
 	std::string m_path_to_texture{};
 	TRXEngine::Color m_agent_color{ 255,255,255,255 };
 	int m_speed{};

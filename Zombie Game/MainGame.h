@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Player.h"
+#include "Zombie.h"
 #include "Textures.h"
 #include "LevelManager.h"
 
@@ -56,6 +57,9 @@ private:
 
 	GAME_STATE m_game_state{};
 	Player m_player{};
+	// holds zombies currently on the map
+	std::vector<Zombie> m_zombies{};
+	std::vector<Human> m_humans{};
 
 	TRXEngine::Window m_window{};   
 	TRXEngine::GLSLProgram m_texture_program{};   

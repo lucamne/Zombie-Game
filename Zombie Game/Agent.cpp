@@ -15,6 +15,7 @@ Agent::Agent()
 Agent::Agent(glm::vec2 position, glm::vec2 dimensions, const std::string& path_to_texture)
 	:m_position{position},
 	m_dimensions{dimensions},
+	m_center_position{ m_position.x + m_dimensions * 0.5f },
 	m_path_to_texture{path_to_texture},
 	m_speed{10}
 {
@@ -36,6 +37,7 @@ void Agent::draw(TRXEngine::SpriteBatch& sprite_batch) const
 void Agent::setPosition(glm::vec2 pos)
 {
 	m_position = pos;
+	m_center_position = pos + m_dimensions * 0.5f;
 	checkWallCollisions();
 }
 
@@ -144,9 +146,8 @@ bool Agent::checkWallCollisions()
 			change_in_position = { -(static_cast<int>(top_right.x) % tile_width) , -static_cast<int>(top_right.y) % tile_height };
 			x_pos = top_right.x;
 			y_pos = top_right.y;
-			collision_count++;
 		}
-
+		collision_count++;
 	}
 	// check bottom_right vertex
 	if (vertex_collisions[BOTTOM_RIGHT])
@@ -184,7 +185,6 @@ bool Agent::checkWallCollisions()
 		collision_count++;
 
 	}
-	std::cout << collision_count << '\n';
 	// if no collisions return
 	if (collision_count == 0)
 		return false;
