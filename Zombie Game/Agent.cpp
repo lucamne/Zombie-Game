@@ -13,11 +13,12 @@ Agent::Agent()
 }
 
 Agent::Agent(glm::vec2 position, glm::vec2 dimensions, const std::string& path_to_texture)
-	:m_position{position},
-	m_dimensions{dimensions},
+	:m_position{ position },
+	m_dimensions{ dimensions },
 	m_center_position{ m_position.x + m_dimensions * 0.5f },
-	m_path_to_texture{path_to_texture},
-	m_speed{10}
+	m_path_to_texture{ path_to_texture },
+	m_speed{ 10 },
+	m_collisions_on{ true }
 {
 }
 
@@ -36,11 +37,13 @@ void Agent::draw(TRXEngine::SpriteBatch& sprite_batch) const
 
 void Agent::setPosition(glm::vec2 pos)
 {
+	if (isNewPositionInWall(pos))
+		return;
 	m_position = pos;
 	m_center_position = pos + m_dimensions * 0.5f;
-	checkWallCollisions();
 }
 
+// needs fixing, pushing agent out of wall not working correctly
 bool Agent::checkWallCollisions()
 {	
 	// used as map key
@@ -51,7 +54,7 @@ bool Agent::checkWallCollisions()
 		TOP_RIGHT,
 		BOTTOM_RIGHT,
 	};
-	// grabs level data from active level, ensure that active level has been set
+	// holds level data from active level, ensure that active level has been set
 	Level level_data{ LevelManager::getLevelData() };
 	
 	glm::vec2 top_left{ m_position + glm::vec2(0,m_dimensions.y) };
@@ -94,16 +97,7 @@ bool Agent::checkWallCollisions()
 
 		if (collision_count == 1)
 		{
-			if (static_cast<int>(bottom_left.x) == x_pos)
-			{
-				change_in_position = { tile_width - (static_cast<int>(bottom_left.x) % tile_width),0 };
-				y_pos = bottom_left.y;
-			}
-			else
-			{
-				change_in_position = {0, tile_height - (static_cast<int>(bottom_left.y) % tile_height) };
-				x_pos = bottom_left.x;
-			}
+			change_in_position.y = 0;
 		}
 		else
 		{
@@ -185,6 +179,7 @@ bool Agent::checkWallCollisions()
 		collision_count++;
 
 	}
+	//std::cout << collision_count << '\n';
 	// if no collisions return
 	if (collision_count == 0)
 		return false;
@@ -204,6 +199,22 @@ bool Agent::checkWallCollisions()
 		m_position += glm::vec2(0, change_in_position.y);
 	}
 	return true;
+}
+
+bool Agent::isNewPositionInWall(glm::vec2 new_pos)
+{
+	// holds level data from active level, ensure that active level has been set
+	Level level_data{ LevelManager::getLevelData() };
+
+	glm::vec2 top_left{ new_pos + glm::vec2(0,m_dimensions.y-1) };
+	glm::vec2 bottom_left{ new_pos };
+	glm::vec2 top_right{ new_pos + m_dimensions - glm::vec2(1,1) };
+	glm::vec2 bottom_right{ new_pos + glm::vec2(m_dimensions.x-1,0) };
+	
+	return level_data.getTileAtScreenCoordinate(top_left) == '#' ||
+		level_data.getTileAtScreenCoordinate(bottom_left) == '#' ||
+		level_data.getTileAtScreenCoordinate(top_right) == '#' ||
+		level_data.getTileAtScreenCoordinate(bottom_right) == '#';
 }
 
 

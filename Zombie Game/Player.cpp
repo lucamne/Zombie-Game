@@ -18,5 +18,5 @@ void Player::movePlayer(glm::vec2 direction)
 {
 	glm::vec2 move_direc{ glm::normalize(direction) };
 
-	setPosition(getPosition() + move_direc * static_cast<float>(Agent::getSpeed()));
+	Agent::setPosition(Agent::getPosition() + move_direc * static_cast<float>(Agent::getSpeed()));
 }

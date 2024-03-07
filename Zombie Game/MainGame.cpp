@@ -51,6 +51,7 @@ void MainGame::initAgents()
 {
 	m_player.setPosition(LevelManager::getInitPlayerPosition());
 	m_player.setTexturePath(TEXTURES::PLAYER);
+	//m_player.flipCollisionSetting();
 	// add initial zombie to zombie list
 	Zombie zombie(LevelManager::getInitZombiePosition(), glm::vec2(50, 50), TEXTURES::ZOMBIE);
 	// set color of initial zombie to red
@@ -76,12 +77,15 @@ void MainGame::gameLoop()
 		
 		processInput();
 		
+		std::cout << m_player.getCenterPosition().x << ',' << m_player.getCenterPosition().y << '\n';
+
 		m_camera.update();
 
+		/*
 		for (Zombie& z : m_zombies)
 		{
 			z.updatePosition(m_player);
-		}
+		}*/
 
 		drawGame();
 

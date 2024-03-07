@@ -42,7 +42,7 @@ void Zombie::updatePosition(const std::vector<Player>& humans)
 	}
 
 	std::cout << new_direction.x << ',' << new_direction.y << '\n';
-	setPosition(getPosition() + (new_direction * static_cast<float>(getSpeed())));
+	setPosition(getPosition() + (new_direction * static_cast<float>(Agent::getSpeed())));
 }
 
 void Zombie::updatePosition(const Player& player)

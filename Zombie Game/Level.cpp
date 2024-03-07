@@ -64,7 +64,7 @@ void Level::draw(TRXEngine::SpriteBatch& sprite_batch)
 char Level::getTileAtScreenCoordinate(glm::vec2 screen_coords)
 {
 	int x_tile{ static_cast<int>(screen_coords.x / m_tile_width) };
-	int y_tile{ static_cast<int>(m_data.size()) -1 - static_cast<int>(screen_coords.y / m_tile_height) };
+	int y_tile{ static_cast<int>(m_data.size() - 1) - static_cast<int>(screen_coords.y / m_tile_height)};
 	// bounds checking to prevent crash
 	if (x_tile < 0 || x_tile >= m_data[0].size() || y_tile < 0 || y_tile >= m_data.size())
 	{
