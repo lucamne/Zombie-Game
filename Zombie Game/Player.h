@@ -15,5 +15,7 @@ public:
 	
 	// getters
 	glm::vec2 getPosition() const { return Agent::getPosition(); }
+
+private:
 };
 

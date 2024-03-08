@@ -35,188 +35,163 @@ void Agent::draw(TRXEngine::SpriteBatch& sprite_batch) const
 	sprite_batch.draw(dest_rec, uv_rec, agent_texture.id, 1.0f, m_agent_color);
 }
 
+
 void Agent::setPosition(glm::vec2 pos)
 {
-	if (isNewPositionInWall(pos))
-		return;
-	m_position = pos;
-	m_center_position = pos + m_dimensions * 0.5f;
-}
-
-// needs fixing, pushing agent out of wall not working correctly
-bool Agent::checkWallCollisions()
-{	
-	// used as map key
-	enum VERTEX_TYPE
+	// if new position does not place any vertices of agent in wall then set that position
+	if (!isPositionInWall(pos))
 	{
-		TOP_LEFT,
-		BOTTOM_LEFT,
-		TOP_RIGHT,
-		BOTTOM_RIGHT,
-	};
-	// holds level data from active level, ensure that active level has been set
-	Level level_data{ LevelManager::getLevelData() };
-	
-	glm::vec2 top_left{ m_position + glm::vec2(0,m_dimensions.y) };
-	glm::vec2 bottom_left{  m_position };
-	glm::vec2 top_right{m_position + m_dimensions };
-	glm::vec2 bottom_right{ m_position + glm::vec2(m_dimensions.x,0) };
-
-	// map holds AgentVertex (glm::vec2) if AgentVertex is in wall block
-	std::map<VERTEX_TYPE,bool> vertex_collisions{};
-	// check top left vertex
-	vertex_collisions.emplace(TOP_LEFT, level_data.getTileAtScreenCoordinate(top_left) == '#');
-	// check bottom left vertex
-	vertex_collisions.emplace(BOTTOM_LEFT, level_data.getTileAtScreenCoordinate(bottom_left) == '#');
-	// check top right vertex
-	vertex_collisions.emplace(TOP_RIGHT, level_data.getTileAtScreenCoordinate(top_right) == '#');
-	// check bottom right vertex
-	vertex_collisions.emplace(BOTTOM_RIGHT, level_data.getTileAtScreenCoordinate(bottom_right) == '#');
-
-	// keeps track of number of vertices in wall tiles
-	int collision_count{ 0 };
-	float x_pos{};
-	float y_pos{};
-	// tile dimensions
-	int tile_width{ level_data.getTileWidth() };
-	int tile_height{ level_data.getTileHeight()};
-	// change in position vector
-	glm::vec2 change_in_position{};
-
-	// check top left vertex
-	if (vertex_collisions[TOP_LEFT])
-	{
-		change_in_position = { tile_width - (static_cast<int>(top_left.x) % tile_width) , -(static_cast<int>(top_left.y) % tile_height) };
-		x_pos = top_left.x;
-		y_pos = top_left.y;	
-		collision_count++;
-	}
-	// check bottom_left vertex
-	if (vertex_collisions[BOTTOM_LEFT])
-	{
-
-		if (collision_count == 1)
-		{
-			change_in_position.y = 0;
-		}
-		else
-		{
-			change_in_position = { tile_width - (static_cast<int>(bottom_left.x) % tile_width) ,tile_height - (static_cast<int>(bottom_left.y) % tile_height) };
-			x_pos = bottom_left.x;
-			y_pos = bottom_left.y;
-		}
-		collision_count++;
-	}
-	// check top_right vertex
-	if (vertex_collisions[TOP_RIGHT])
-	{
-		if (collision_count == 1)
-		{
-			if (static_cast<int>(top_right.x) == x_pos)
-			{
-				change_in_position = { -(static_cast<int>(top_right.x) % tile_width),0 };
-				y_pos = top_right.y;
-			}
-			else
-			{
-				change_in_position = { 0, -(static_cast<int>(top_right.y) % tile_height) };
-				x_pos = top_right.x;
-			}
-		}
-		else if (collision_count == 2)
-		{
-			if (change_in_position.x == 0)
-			{
-				change_in_position += glm::vec2(-(static_cast<int>(top_right.x) % tile_width), 0);
-			}
-			else
-			{
-				change_in_position += glm::vec2(0, -(static_cast<int>(top_right.y) % tile_height));
-			}
-		}
-
-		else
-		{
-			change_in_position = { -(static_cast<int>(top_right.x) % tile_width) , -static_cast<int>(top_right.y) % tile_height };
-			x_pos = top_right.x;
-			y_pos = top_right.y;
-		}
-		collision_count++;
-	}
-	// check bottom_right vertex
-	if (vertex_collisions[BOTTOM_RIGHT])
-	{
-		if (collision_count == 1)
-		{
-			if (static_cast<int>(bottom_right.x) == x_pos)
-			{
-				change_in_position = { -(static_cast<int>(bottom_right.x) % tile_width), 0 };
-				y_pos = bottom_right.y;
-			}
-			else
-			{
-				change_in_position = { 0, tile_height - (static_cast<int>(bottom_right.y) % tile_height) };
-				x_pos = bottom_right.x;
-			}
-		}
-		else if (collision_count == 2)
-		{
-			if (change_in_position.x == 0)
-			{
-				change_in_position += glm::vec2(-(static_cast<int>(bottom_right.x) % tile_width), 0);
-			}
-			else
-			{
-				change_in_position += glm::vec2(0, tile_height - (static_cast<int>(bottom_right.y) % tile_height));
-			}
-		}
-		else
-		{
-			change_in_position = { -(static_cast<int>(bottom_right.x) % tile_width) , tile_height - (static_cast<int>(bottom_right.y) % tile_height) };
-			x_pos = bottom_right.x;
-			y_pos = bottom_right.y;
-		}
-		collision_count++;
-
-	}
-	//std::cout << collision_count << '\n';
-	// if no collisions return
-	if (collision_count == 0)
-		return false;
-	// if one value is 0 must move according to other component
-	if (change_in_position.x == 0 || change_in_position.y == 0)
-	{
-		m_position += change_in_position;
-		return true;
-	}
-	// push agent the direction with the smallest component
-	if (std::abs(change_in_position.x) <= std::abs(change_in_position.y))
-	{
-		m_position += glm::vec2(change_in_position.x,0);
+		m_position = pos;
+		m_center_position = pos + m_dimensions * 0.5f;
 	}
 	else
 	{
-		m_position += glm::vec2(0, change_in_position.y);
+		m_position = pushOutOfWall(pos);
+		m_center_position = m_position + m_dimensions * 0.5f;
 	}
-	return true;
 }
 
-bool Agent::isNewPositionInWall(glm::vec2 new_pos)
+bool Agent::isPositionInWall(glm::vec2 new_pos)
 {
 	// holds level data from active level, ensure that active level has been set
 	Level level_data{ LevelManager::getLevelData() };
 
-	glm::vec2 top_left{ new_pos + glm::vec2(0,m_dimensions.y-1) };
+	glm::vec2 dimensions{ getDimensions() };
+
+	glm::vec2 top_left{ new_pos + glm::vec2(0,dimensions.y) };
 	glm::vec2 bottom_left{ new_pos };
-	glm::vec2 top_right{ new_pos + m_dimensions - glm::vec2(1,1) };
-	glm::vec2 bottom_right{ new_pos + glm::vec2(m_dimensions.x-1,0) };
-	
+	glm::vec2 top_right{ new_pos + dimensions };
+	glm::vec2 bottom_right{ new_pos + glm::vec2(dimensions.x,0) };
+
 	return level_data.getTileAtScreenCoordinate(top_left) == '#' ||
 		level_data.getTileAtScreenCoordinate(bottom_left) == '#' ||
 		level_data.getTileAtScreenCoordinate(top_right) == '#' ||
 		level_data.getTileAtScreenCoordinate(bottom_right) == '#';
 }
 
+glm::vec2 Agent::pushOutOfWall(glm::vec2 starting_pos)
+{
+	Level level_data{ LevelManager::getLevelData() };
+	int tile_w{ level_data.getTileWidth() };
+	int tile_h{ level_data.getTileHeight() };
+
+	glm::vec2 dimensions{ getDimensions() };
+
+	glm::vec2 top_left{ starting_pos + glm::vec2(0,dimensions.y) };
+	glm::vec2 bottom_left{ starting_pos };
+	glm::vec2 top_right{ starting_pos + dimensions };
+	glm::vec2 bottom_right{ starting_pos + glm::vec2(dimensions.x,0) };
+
+	glm::vec2 x_move{};
+	glm::vec2 y_move{};
+
+	if (level_data.getTileAtScreenCoordinate(top_left) == '#')
+	{
+		// try moving right
+		if (static_cast<int>(top_left.x) % tile_w == 0) 
+			x_move = { 1,0 };
+		else 
+			x_move = { tile_w - (static_cast<int>(top_left.x) % tile_w), 0 };
+		if (!isPositionInWall(starting_pos + x_move))
+		{
+			return starting_pos + x_move;
+		}
+
+		// try moving down
+		// -1 is added to y component to ensure space from wall
+		y_move = { 0,-(static_cast<int>(top_left.y) % tile_h) - 1 };
+		if (!isPositionInWall(starting_pos + y_move))
+		{
+			return starting_pos + y_move;
+		}
+
+		// try moving diagonal
+		if (!isPositionInWall(starting_pos + y_move + x_move))
+		{
+			return starting_pos + y_move + x_move;
+		}
+	}
+	if (level_data.getTileAtScreenCoordinate(bottom_left) == '#')
+	{
+		// try moving right
+		if (static_cast<int>(bottom_left.x) % tile_w == 0)
+			x_move = { 1,0 };
+		else
+			x_move = { tile_w - (static_cast<int>(bottom_left.x) % tile_w), 0 };
+		if (!isPositionInWall(starting_pos + x_move))
+		{
+			return starting_pos + y_move;
+		}
+
+		// try moving up
+		if (static_cast<int>(bottom_left.y) % tile_h == 0)
+			y_move = { 0,1 };
+		else
+			y_move = { 0, tile_h -(static_cast<int>(bottom_left.y) % tile_h) };
+		if (!isPositionInWall(starting_pos + y_move))
+		{
+			return starting_pos + y_move;
+		}
+
+		// try moving diagonal
+		if (!isPositionInWall(starting_pos + y_move + x_move))
+		{
+			return starting_pos + y_move + x_move;
+		}
+	}
+	if (level_data.getTileAtScreenCoordinate(top_right) == '#')
+	{
+		// try moving left
+		// -1 is added to x component to ensure space from wall
+		x_move = { - (static_cast<int>(top_right.x) % tile_w) - 1, 0 };
+		if (!isPositionInWall(starting_pos + x_move))
+		{
+			return starting_pos + x_move;
+		}
+
+		// try moving down
+		// -1 is added to y component to ensure space from wall
+		y_move = { 0,-(static_cast<int>(top_right.y) % tile_h) - 1 };
+		if (!isPositionInWall(starting_pos + y_move))
+		{
+			return starting_pos + y_move;
+		}
+
+		// try moving diagonal
+		if (!isPositionInWall(starting_pos + y_move + x_move))
+		{
+			return starting_pos + y_move + x_move;
+		}
+	}
+	if (level_data.getTileAtScreenCoordinate(bottom_right) == '#')
+	{
+		// try moving left
+		// -1 is added to x component to ensure space from wall
+		x_move = { -(static_cast<int>(bottom_right.x) % tile_w) - 1, 0 };
+		if (!isPositionInWall(starting_pos + x_move))
+		{
+			return starting_pos + x_move;
+		}
+
+		// try moving up
+		if (static_cast<int>(bottom_right.y) % tile_h == 0)
+			y_move = { 0,1 };
+		else
+			y_move = { 0, tile_h - (static_cast<int>(bottom_right.y) % tile_h) };
+		if (!isPositionInWall(starting_pos + y_move))
+		{
+			return starting_pos + y_move;
+		}
+
+		// try moving diagonal
+		if (!isPositionInWall(starting_pos + y_move + x_move))
+		{
+			return starting_pos + y_move + x_move;
+		}
+	}
+
+	return starting_pos;
+}
 
 
 

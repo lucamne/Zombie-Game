@@ -44,8 +44,8 @@ private:
 	float m_speed{};
 	bool m_collisions_on{};
 
-	// returns true if a collision has occured
-	bool checkWallCollisions();
-	bool isNewPositionInWall(glm::vec2 new_pos);
+	bool isPositionInWall(glm::vec2 new_pos);
+	// returns new position if a valid one is found, otherwise returns the starting position
+	glm::vec2 pushOutOfWall(glm::vec2 starting_pos);
 };
 

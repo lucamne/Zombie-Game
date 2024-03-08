@@ -42,11 +42,18 @@ void Zombie::updatePosition(const std::vector<Player>& humans)
 	}
 
 	std::cout << new_direction.x << ',' << new_direction.y << '\n';
-	setPosition(getPosition() + (new_direction * static_cast<float>(Agent::getSpeed())));
+	Agent::setPosition(Agent::getPosition() + (new_direction * static_cast<float>(Agent::getSpeed())));
 }
 
 void Zombie::updatePosition(const Player& player)
 {
 	glm::vec2 new_direction{ glm::normalize(player.getCenterPosition() - this->getCenterPosition()) };
-	setPosition(getPosition() + (new_direction * static_cast<float>(getSpeed())));
+
+	// set x and y components seperately so that zombie will still move even if one direction places them in a wall
+
+	// set x component
+	setPosition(getPosition() + (glm::vec2(new_direction.x,0) *static_cast<float>(Agent::getSpeed())));
+	// set y component
+	setPosition(getPosition() + (glm::vec2(0, new_direction.y) * static_cast<float>(Agent::getSpeed())));
+
 }
