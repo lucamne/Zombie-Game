@@ -58,9 +58,9 @@ private:
 	GAME_STATE m_game_state{};
 	Player m_player{};
 	// holds zombies currently on the map
-	std::vector<Zombie> m_zombies{};
+	std::vector<Zombie*> m_zombies{};
 	// holds humans currently on the map
-	std::vector<Human> m_humans{};
+	std::vector<Human*> m_humans{};
 
 	TRXEngine::Window m_window{};   
 	TRXEngine::GLSLProgram m_texture_program{};   
