@@ -24,6 +24,7 @@ void MainGame::run()
 {
 	initSystems();
 	gameLoop();
+	cleanup();
 }
 
 void MainGame::initSystems()
@@ -67,6 +68,7 @@ void MainGame::initAgents()
 	for (int i{ 0 }; i < init_human_positions.size(); i++)
 	{
 		m_humans.emplace_back(new Human(init_human_positions[i], agent_dimensions, TEXTURES::HUMAN));
+		m_humans.back()->setSpeed(3.0f);
 	}
 }
 
@@ -233,4 +235,13 @@ void MainGame::drawGame()
 
 void MainGame::cleanup()
 {
+	for (Zombie* z : m_zombies)
+	{
+		delete z;
+	}
+
+	for (Human* h : m_humans)
+	{
+		delete h;
+	}
 }
