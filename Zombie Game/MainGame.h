@@ -59,6 +59,7 @@ private:
 	Player m_player{};
 	// holds zombies currently on the map
 	std::vector<Zombie> m_zombies{};
+	// holds humans currently on the map
 	std::vector<Human> m_humans{};
 
 	TRXEngine::Window m_window{};   

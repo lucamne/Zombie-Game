@@ -92,6 +92,9 @@ void Level::initPositions()
 			case 'Z':
 				m_init_zombie_position = levelCoordsToScreenCoords({ x,y });
 				break;
+			case 'H':
+				m_init_human_positions.emplace_back(levelCoordsToScreenCoords({x,y}));
+				break;
 			default:
 				break;
 			}

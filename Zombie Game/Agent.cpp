@@ -15,7 +15,7 @@ Agent::Agent()
 Agent::Agent(glm::vec2 position, glm::vec2 dimensions, const std::string& path_to_texture)
 	:m_position{ position },
 	m_dimensions{ dimensions },
-	m_center_position{ m_position.x + m_dimensions * 0.5f },
+	m_center_position{ m_position + m_dimensions * 0.5f },
 	m_path_to_texture{ path_to_texture },
 	m_speed{ 10 },
 	m_collisions_on{ true }

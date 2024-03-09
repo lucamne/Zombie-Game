@@ -49,15 +49,25 @@ void MainGame::initSystems()
 
 void MainGame::initAgents()
 {
+	// all agents have the same dimensions
+	glm::vec2 agent_dimensions{ 50,50 };
+
 	m_player.setPosition(LevelManager::getInitPlayerPosition());
 	m_player.setTexturePath(TEXTURES::PLAYER);
 	//m_player.flipCollisionSetting();
 	// add initial zombie to zombie list
-	Zombie zombie(LevelManager::getInitZombiePosition(), glm::vec2(50, 50), TEXTURES::ZOMBIE);
+	Zombie zombie(LevelManager::getInitZombiePosition(), agent_dimensions, TEXTURES::ZOMBIE);
 	//// set color of initial zombie to red
 	zombie.setColor({ 255, 0, 0, 255 });
 	zombie.setSpeed(3);
-	m_zombies.emplace_back(zombie);
+	m_zombies.push_back(zombie);
+
+	// initialize humans
+	const std::vector<glm::vec2>& init_human_positions{LevelManager::getInitHumanPositions()};
+	for (int i{ 0 }; i < init_human_positions.size(); i++)
+	{
+		m_humans.emplace_back(init_human_positions[i], agent_dimensions, TEXTURES::HUMAN);
+	}
 }
 
 void MainGame::initShaders()
@@ -82,7 +92,7 @@ void MainGame::gameLoop()
 		
 		for (Zombie& z : m_zombies)
 		{
-			z.updatePosition(m_player);
+			z.updatePosition(m_humans,m_player);
 		}
 
 		drawGame();
@@ -190,6 +200,12 @@ void MainGame::drawGame()
 
 	//draw level
 	LevelManager::draw(m_sprite_batch);
+
+	// draw humans
+	for (Human& human : m_humans)
+	{
+		human.draw(m_sprite_batch);
+	}
 
 	// draw zombies
 	for (Zombie& zombie : m_zombies)

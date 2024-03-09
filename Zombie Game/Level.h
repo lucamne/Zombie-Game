@@ -25,6 +25,7 @@ public:
 	// getters
 	glm::vec2 getInitPlayerPosition() const { return m_init_player_position; }
 	glm::vec2 getInitZombiePosition() const { return m_init_zombie_position; }
+	const std::vector<glm::vec2>& getInitHumanPositions() const { return m_init_human_positions; }
 	int getTileWidth() const { return m_tile_width; }
 	int getTileHeight() const { return m_tile_height; }
 
@@ -42,7 +43,8 @@ private:
 	glm::vec2 m_init_player_position{};
 	// starting position of zombie, set upon initial load
 	glm::vec2 m_init_zombie_position{};
-	// draw call to be made on initial draw call
+	// starting positions of humans, set upon initial load
+	std::vector<glm::vec2> m_init_human_positions{};
 
 	void initPositions();
 	void drawWall(int x, int y, TRXEngine::SpriteBatch& sprite_batch);
