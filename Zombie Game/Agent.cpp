@@ -18,7 +18,8 @@ Agent::Agent(glm::vec2 position, glm::vec2 dimensions, const std::string& path_t
 	m_center_position{ m_position + m_dimensions * 0.5f },
 	m_path_to_texture{ path_to_texture },
 	m_speed{ 10 },
-	m_collisions_on{ true }
+	m_collisions_on{ true },
+	m_state{AGENT_STATE::ALIVE}
 {
 }
 
@@ -28,6 +29,12 @@ Agent::~Agent()
 
 void Agent::draw(TRXEngine::SpriteBatch& sprite_batch) const
 {
+	// agent is dead no need to draw it
+	if (m_state == AGENT_STATE::DEAD)
+	{
+		return;
+	}
+
 	static TRXEngine::GLTexture agent_texture{ TRXEngine::ResourceManager::getTexture(m_path_to_texture) };
 	glm::vec4 dest_rec{ m_position,m_dimensions };
 	glm::vec4 uv_rec{ 0.0f,0.0f,1.0f,1.0f };
@@ -35,6 +42,13 @@ void Agent::draw(TRXEngine::SpriteBatch& sprite_batch) const
 	sprite_batch.draw(dest_rec, uv_rec, agent_texture.id, 1.0f, m_agent_color);
 }
 
+
+bool Agent::isCollidedWithAgent(glm::vec2 center_pos, float radius)
+{
+	float d{ glm::distance(m_center_position,center_pos) };
+	// 15 is subtracted to let the sprites overlap more visually before reporting collision
+	return d < (radius / 2.0f + m_dimensions.x / 2.0f) - 15;
+}
 
 void Agent::setPosition(glm::vec2 pos)
 {

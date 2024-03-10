@@ -11,6 +11,8 @@ Zombie::Zombie()
 Zombie::Zombie(glm::vec2 position, glm::vec2 dimensions, const std::string& path_to_texture)
 	:Agent(position,dimensions,path_to_texture)
 {
+	Agent::setSpeed(3.0f);
+	Agent::setColor({ 255, 0, 0, 255 });
 }
 
 Zombie::~Zombie()
@@ -25,12 +27,31 @@ void Zombie::updatePosition(const std::vector<Human*>& humans)
 	}
 	
 	glm::vec2 this_center{ this->getCenterPosition() };
-	// set initial values for min_distance and direction to first human in vector
-	float min_distance{glm::distance(humans[0]->getCenterPosition(),this_center)};
-	glm::vec2 new_direction{glm::normalize(humans[0]->getCenterPosition() - this_center)};
+	float min_distance{};
+	glm::vec2 new_direction{};
 
-	for (int i{ 1 }; i < humans.size(); i++)
+	int i{ 0 };
+
+	// find first alive human and set min_distance and new_direction with that human
+	for (; i < humans.size(); i++)
 	{
+		if (humans[i]->getState() == AGENT_STATE::ALIVE)
+		{
+			min_distance = glm::distance(humans[i]->getCenterPosition(), this_center);
+			new_direction = glm::normalize(humans[i]->getCenterPosition() - this_center);
+			i++;
+			break;
+		}
+	}
+
+	for (; i < humans.size(); i++)
+	{
+		// if human is dead then do not use it to determine zombie position
+		if (humans[i]->getState() == AGENT_STATE::DEAD)
+		{
+			continue;
+		}
+
 		// calculate distance between this zombie and human i
 		glm::vec2 human_center{ humans[i]->getCenterPosition() };
 		float d{ glm::distance(human_center,this_center) };
@@ -67,6 +88,12 @@ void Zombie::updatePosition(const std::vector<Human*>& humans, const Player& pla
 
 	for (int i{ 0 }; i < humans.size(); i++)
 	{
+		// if human is dead then do not use it to determine zombie position
+		if (humans[i]->getState() == AGENT_STATE::DEAD)
+		{
+			continue;
+		}
+
 		// calculate distance between this zombie and human i
 		glm::vec2 human_center{ humans[i]->getCenterPosition() };
 		float d{ glm::distance(human_center,this_center) };

@@ -40,6 +40,8 @@ private:
 
 	/// Main game loop
 	void gameLoop();
+	// removes agents that have been killed from their respective std::vector (agen management functionality should be moved to its own class in the future)
+	void removeDeadAgents();
 
 	/// Handles input processing
 	void processInput();

@@ -67,7 +67,8 @@ void MainGame::initAgents()
 	const std::vector<glm::vec2>& init_human_positions{LevelManager::getInitHumanPositions()};
 	for (int i{ 0 }; i < init_human_positions.size(); i++)
 	{
-		m_humans.emplace_back(new Human(init_human_positions[i], agent_dimensions, TEXTURES::HUMAN));
+		Human* new_human{ new Human(init_human_positions[i], agent_dimensions, TEXTURES::HUMAN) };
+		m_humans.push_back(new_human);
 		m_humans.back()->setSpeed(3.0f);
 	}
 }
@@ -91,19 +92,52 @@ void MainGame::gameLoop()
 
 		m_camera.update();
 
-		for (Human* h : m_humans)
-		{
-			h->updatePosition(m_zombies);
-		}
-
 		for (Zombie* z : m_zombies)
 		{
-			z->updatePosition(m_humans,m_player);
+			z->updatePosition(m_humans, m_player);
 		}
+
+		for (Human* h : m_humans)
+		{
+			h->update(m_zombies);
+		}
+
+		removeDeadAgents();
 
 		drawGame();
 
 		m_fps = m_fps_limiter.end();
+	}
+}
+
+void MainGame::removeDeadAgents()
+{
+	for (int i{ 0 }; i < m_zombies.size();)
+	{
+		if (m_zombies[i]->getState() == AGENT_STATE::DEAD)
+		{
+			delete m_zombies[i];
+			m_zombies[i] = m_zombies.back();
+			m_zombies.pop_back();
+		}
+		else
+		{
+			i++;
+		}
+	}
+
+	for (int i{ 0 }; i < m_humans.size();)
+	{
+		if (m_humans[i]->getState() == AGENT_STATE::DEAD)
+		{
+			delete m_humans[i];
+			m_humans[i] = m_humans.back();
+			m_humans.pop_back();
+		}
+		else
+		{
+			i++;
+		}
 	}
 }
 
